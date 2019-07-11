@@ -1,0 +1,7 @@
+yum install -y net-tools
+
+yum install -y perl-Module-Install.noarch
+
+yum install libaio
+
+rpm -ivh 

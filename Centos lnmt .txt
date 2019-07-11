@@ -1,0 +1,188 @@
+gitlab的安装
+   #安装docker
+   sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+   wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
+   sudo sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+
+   sudo yum makecache fast
+   sudo yum install docker-ce
+   #运行docker
+   sudo systemctl start docker
+   #开机启动
+   systemctl enable docker
+   usermod -aG docker root
+
+   sudo docker run --detach \
+  --hostname 47.94.229.102 \
+  --publish 9443:443 --publish 9080:80 --publish 9022:22 \
+  --name gitlab \
+  --restart always \
+  --volume /srv/gitlab/config:/etc/gitlab \
+  --volume /srv/gitlab/logs:/var/log/gitlab \
+  --volume /srv/gitlab/data:/var/opt/gitlab \
+  gitlab/gitlab-ce:latest
+  #进入gitlab修改gitlab.rb
+  sudo docker exec -it gitlab /bin/bash
+  vi /etc/gitlab/gitlab.rb
+  external_url = "http://47.94.229.102"
+  gitlab-ctl reconfigure
+  gitlab-ctl restart
+  exit
+  
+java8安装
+   cd /root
+   wget http://zcsxbj.zicp.vip:2280/tools/jdk-8u202-linux-x64.tar.gz
+   mkdir /usr/local/java
+   tar -zxvf jdk-8u202-linux-x64.tar.gz -C /usr/local/java/
+   mv /usr/local/java/jdk1.8.0_202 /usr/local/java/jdk
+   vi /etc/profile
+      export JAVA_HOME=/usr/local/java/jdk
+      export PATH=$JAVA_HOME/bin:$PATH
+      export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+   source /etc/profile
+
+
+tomcat8.5.41安装
+   cd /root
+   wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.41/bin/apache-tomcat-8.5.41.tar.gz
+   tar -zxvf apache-tomcat-8.5.41.tar.gz
+   mkdir /usr/local/tomcat
+   mv apache-tomcat-8.5.41 /usr/local/tomcat/
+   
+   #tomcat开机自启
+   vim /etc/init.d/tomcat
+      #!/bin/bash
+      #
+      # tomcat startup script for the Tomcat server
+      #
+      #
+      # chkconfig: 345 80 20
+      # description: start the tomcat deamon
+      #
+      # Source function library
+      . /etc/rc.d/init.d/functions
+
+      prog=tomcat
+      # 根据自己的路径改写JAVA_HOME
+      JAVA_HOME=/usr/local/java/jdk/  
+      export JAVA_HOME
+      # 根据自己的路径改写CATALANA_HOME
+      CATALANA_HOME=/usr/local/tomcat/apache-tomcat-8.5.41   
+      export CATALINA_HOME
+
+      case "$1" in
+      start)
+          echo "Starting Tomcat..."
+          $CATALANA_HOME/bin/startup.sh
+          ;;
+
+      stop)
+          echo "Stopping Tomcat..."
+          $CATALANA_HOME/bin/shutdown.sh
+          ;;
+
+      restart)
+          echo "Stopping Tomcat..."
+          $CATALANA_HOME/bin/shutdown.sh
+          sleep 2
+          echo
+          echo "Starting Tomcat..."
+          $CATALANA_HOME/bin/startup.sh
+          ;;
+
+      *)
+          echo "Usage: $prog {start|stop|restart}"
+          ;;
+      esac
+      exit 0
+
+    chmod a+x /etc/init.d/tomcat
+    service tomcat start
+
+
+
+#如果出现Failed to start firewalld.service
+systemctl unmask firewalld.service
+systemctl start firewalld.service
+
+jenkins配置
+  1.jenkins安装
+    cd /root
+    wget https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat/jenkins-2.179-1.1.noarch.rpm
+    yum install jenkins-2.179-1.1.noarch.rpm
+  2.端口修改
+    vi /etc/sysconfig/jenkins
+    注释#JENKINS_PORT="8080"
+    #新添加JENKINS_PORT配置
+    JENKINS_PORT="9090"
+  3.添加java地址
+    vi /etc/init.d/jenkins
+    在candidstes=" "中添加java地址
+    /usr/local/java/jdk/bin/java
+  4.启动jenkins
+   /etc/init.d/jenkins start 
+
+maven安装
+    cd /root
+    wget https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
+    mkdir /usr/local/maven
+    tar -zxvf apache-maven-3.6.1-bin.tar.gz -C /usr/local/maven/
+    vi /etc/profile
+        export MAVEN_HOME=/usr/local/maven/apache-maven-3.6.1
+        export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$MAVEN_HOME/bin:$PATH
+    source /etc/profile
+
+
+nexus安装
+      cd /root
+      wget http://zcsxbj.zicp.vip:2280/tools/nexus-3.16.1-02-unix.tar.gz
+      mkdir /usr/local/nexus
+      tar -zxvf nexus-3.16.1-02-unix.tar.gz -C /usr/local/nexus
+      useradd nexus
+      cd /usr/local 
+      chown nexus:nexus -R nexus
+      su - nexus
+      cd /usr/local/nexus/nexus-3.16.1-02/bin/
+      ./nexus start
+
+nexus开机自启
+    vi /etc/systemd/system/nexus.service
+        [Unit]
+        Description=nexus service
+        After=network.target
+          
+        [Service]
+        Type=forking
+        LimitNOFILE=65536
+        ExecStart=/usr/local/nexus/nexus-3.16.1-02/bin/nexus start
+        ExecStop=/usr/local/nexus/nexus-3.16.1-02/bin/nexus stop
+        User=nexus
+        Restart=on-abort
+          
+        [Install]
+        WantedBy=multi-user.target
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable nexus.service
+    sudo systemctl start nexus.service
+
+    reboot 
+    测试http://ip地址:8081/
+
+
+
+kafka安装
+  cd /root
+  wget https://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.2.0/kafka_2.12-2.2.0.tgz
+  mkdir /usr/local/kafka
+  tar -zxvf kafka_2.12-2.2.0.tgz -C /usr/local/kafka
+
+
+nginx          /usr/local/nginx                         http://47.94.229.102
+java1.8:       /usr/local/java/jdk
+tomcat8.5.41   /usr/local/tomcat/apache-tomcat-8.5.41   http://47.94.229.102:8080  
+jenkins        yum install                              http://47.94.229.102:9090  root ed6dea1c 
+maven          /usr/local/maven/apache-maven-3.6.1  
+nexus          /usr/local/nexus/                        http://47.94.229.103:8081
+kafka          /usr/local/kafka        
+gitlab         docker                                   http://47.94.229.103:9080

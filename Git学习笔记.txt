@@ -1,0 +1,77 @@
+1.git的提交
+  git首先将本地文件夹里面的文件提交到git索引区（Stage）,然后再提交到git库（本地库或者远程库）
+
+2.git的初始设定
+  建立本地git库
+  git init
+  设置基础信息
+  git config -l(list) 列出git的配置信息
+  git config --global user.name "chenwei" 设置用户名
+  git config --global user.email chenwei@qq.com 设置邮箱地址
+  git config -l
+
+3.git的帮助
+  git config --help / git help config 查看git关于config的说明文档
+  git commit --help / git help commit 查看git关于commit的说明文档、
+
+4.提交
+  建立文件（本地文件夹）
+  追加文件（索引区）
+  提交文件（本地库）
+  
+  建立本地库
+  git init
+  查看本地文件夹中文件的状态
+  git status     红色表示未添加到索引区 绿色表示已添加到索引区
+  提交文件到索引区
+  git add file   
+  将索引区文件提交到本地库
+  git commit  -m "提交干了什么"
+  查看提交历史
+  git log 
+
+5.查看提交履历
+  git log  显示全部日志
+  git log --oneline 一行显示所有的日志，相对于上面有所精简
+  git log -p 显示详细日志
+
+6.把握git状态
+  git status
+  git checkout -- file 取消文件的修改
+  git reset HEAD file 把文件从索引区退出
+
+7.比较修改内容
+  git diff 工作文件夹比较
+  git diff --cached 索引区比较
+
+8.git文件操作
+  git add file1 file2 ... 将文件从文件工作目录提交到索引区
+  git add .               将所有文件提交到索引区
+  git rm                  从文件工作删除文件
+  git rm --cached         从索引区删除文件
+  git mv                  移动或者改名
+
+9.git忽略管理
+  .gitignore  用于管理忽略文件
+  
+10.更新最后提交
+  git commit -m "commit message"
+  git commit --amend 不在追加新的提交记录，将本次的提交记录添加到上次的提交记录
+  git commit -am "commit message" [--amend]
+
+11.返回过去1
+  git reset --hard HEAD 代码状态返回上次提交
+
+  git remote -v 查看远程仓库
+
+一、新建代码库
+#在当前目录新建一个代码库
+  git init
+
+#新建一个目录，并将其初始化为Git代码库
+  git init <project-name>
+
+#下载一个项目和它的整个代码库
+  git clone <url>
+
+二、

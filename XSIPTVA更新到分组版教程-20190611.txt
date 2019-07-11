@@ -1,0 +1,18 @@
+1.备份原数据库
+mysqldump -uroot -ped6dea1c osadmin > /root/osadmin-backup.sql
+mysqldump -uroot -ped6dea1c xsiptvadb > /opt/xsiptvadb-backup.sql
+
+2.备份原XSIPTVA
+cd /opt
+mv XSIPTVA XSIPTVA-opt
+
+3.使用分组版XSIPTVA
+cd /opt
+wget http://zishion.qicp.vip:2280/tools/XSIPTVA-group-bin-20190608.tar.gz  #分组版
+tar -zxvf XSIPTVA-group-bin-20190608.tar.gz
+
+4.导入xsiptvadb-group-update.sql
+mysql -uroot -ped6dea1c </opt/XSIPTVA/db/xsiptvadb-group-update.sql
+
+5.导入xosadmin-group-update.sql
+mysql -uroot -ped6dea1c </opt/XSIPTVA/db/xosadmin-group-update.sql

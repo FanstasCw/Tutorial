@@ -1,0 +1,176 @@
+更新日志：
+2019-5-16：大幅度优化LNMP的安装时间，自动注释my.cnf里的log-bin=mysql-bin和binlog_format=mixed，自动注释php-fpm.conf里的error_log
+2019-6-10: 增加各个安装包的下载链接
+
+一、安装《CENTOS7安装指南》安装CentOS7操作系统
+1、配置上网网口IP地址、掩码、网关和DNS（选择DHCP时不用手工配置）
+	ping 114.114.114.114不通说明网关不通，ping www.baidu.com说明DNS不通
+		
+2、如果你选择了mini最小安装，请用下面的命令补安装基础包
+	yum install -y net-tools
+	yum install -y wget
+
+二、安装相关工具包
+	yum install -y dos2unix
+	yum install -y lrzsz
+	yum install -y iptraf-ng
+	yum install -y rp-pppoe
+
+三、安装LNMP软件包
+	cd /root
+	#wget http://61.182.227.218:38081/tools/lnmp1.3-zishion.tar.gz
+    # wget http://zishion.qicp.vip:2280/tools/lnmp1.3-zishion.tar.gz
+    wget http://192.168.88.22/tools/lnmp1.3-zishion.tar.gz
+	tar -zxvf lnmp1.3-zishion.tar.gz
+	 cd lnmp1.3-zishion
+	./install.sh
+	# 设置mysql root密码ed6dea1c
+	# 随后都回车选择缺省配置
+	# 开始安装
+
+#将软件包上传(移动/下载)到/opt目录下
+	wget http://zishion.qicp.vip:2280/tools/XLicenseServer-bin-20190118.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XNetworkManager-bin-new20190325.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XIPTVCapServer2-bin-20190530.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XLiveServer-bin-20190518.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XSIPTVC-bin-new20190530.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XSIPTVA-bin-20190325.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XSIPTVA-group-bin-20190608.tar.gz  #分组版
+	wget http://zishion.qicp.vip:2280/tools/XSIPTVP-bin-new20181130.tar.gz	
+	wget http://zishion.qicp.vip:2280/tools/XCountryServer-bin-20190325.tar.gz 
+	wget http://zishion.qicp.vip:2280/tools/XVodServer-bin-20180623.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/XRecordServer-bin-20190325.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/picture-2019.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/video-2019.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/apk-2019.tar.gz
+	wget http://zishion.qicp.vip:2280/tools/apk-xa.tar.gz
+	wget http://192.168.88.22/tools/XLicenseServer-bin-20190118.tar.gz
+	wget http://192.168.88.22/tools/XNetworkManager-bin-new20190325.tar.gz
+	wget http://192.168.88.22/tools/XIPTVCapServer2-bin-20190530.tar.gz
+	wget http://192.168.88.22/tools/XLiveServer-bin-20190518.tar.gz
+	wget http://192.168.88.22/tools/XSIPTVC-bin-new20190530.tar.gz
+	wget http://192.168.88.22/tools/XSIPTVA-bin-20190325.tar.gz
+	wget http://192.168.88.22/tools/XSIPTVA-group-bin-20190608.tar.gz  #分组版
+	wget http://192.168.88.22/tools/XSIPTVP-bin-new20181130.tar.gz	
+	wget http://192.168.88.22/tools/XCountryServer-bin-20190325.tar.gz 
+	wget http://192.168.88.22/tools/XVodServer-bin-20180623.tar.gz
+	wget http://192.168.88.22/tools/XRecordServer-bin-20190325.tar.gz
+	wget http://192.168.88.22/tools/picture-2019.tar.gz
+	wget http://192.168.88.22/tools/video-2019.tar.gz
+	wget http://192.168.88.22/tools/apk-2019.tar.gz
+	wget http://192.168.88.22/tools/apk-xa.tar.gz
+#文件解压技巧
+	批量解压文件夹下的tar文件（可能偶现部分压缩包解压不完整，表现为后台出错，重新解压对应安装包即可）
+	ls *.tar.gz | xargs -n1 tar xzvf
+陕西西安西部大道酒店 
+四、安装XlicenseServer授权管理软件
+	cd XLicenseServer
+	./install.sh
+
+	cd license
+	rz -y
+	cd /opt
+
+五、安装XNetworkManager网络管理软件	
+
+	cd XNetworkManager
+	./install.sh
+	cd /opt
+
+六、安装XIPTVCapServer2组播管理软件
+	cd XIPTVCapServer2
+	./install.sh
+	cd /opt
+	
+七、安装XLiveServer单播管理软件
+	cd XLiveServer
+	./install.sh
+	cd /opt
+
+八、安装XSIPTVC直播管理WEB后台
+	cd XSIPTVC
+	./install.sh
+	cd /opt
+
+九、安装XSIPTVA业务管理软件 
+	cd XSIPTVA
+	./install.sh
+	cd /opt
+#XSIPTVA/web/xsiptva/include/config/config.inc.php
+#常用apk名称及包名
+	影视点播	    com.gdsnm.asvod
+	电视直播	    com.xsmartvison.xsmarttv
+	乐播投屏	    com.hpplay.happyplay.aw	 
+	银河奇异果	    com.gitvdemo.video
+	CIBN环球影视	com.cibn.tv
+	QQ音乐	       com.tencent.qqmusictv
+	天气预报	    com.kaiboer.weather
+	酒店服务	    com.xsmartvision.service
+	酒店介绍	    com.xsmartvision.about
+	酒店商城	    com.xsmartvision.shop
+	智慧乡村        com.xsmartvision.countryvod
+
+十、安装XSIPTVP门户WEB后台
+	cd XSIPTVP
+	./install.sh
+	cd /opt
+陕西西安西部大道酒店
+广西北海芙蓉哥网络代理
+十一、安装XRecordServer录制管理软件
+	cd XRecordServer
+	./install.sh
+	cd /opt
+
+十二、安装XVodServer内网点播管理软件
+	打开命令终端，切换到root用户
+	cd /opt
+	rz -y
+	选择上传XVodServer-bin-版本日期.tar.gz
+	tar -zxvf XVodServer-bju'hin-版本日期.tar.gz 
+	cd XVodServer
+	./install.sh
+
+	点播上传环境配置：
+	yum install samba
+	systemctl start smb.service
+	chkconfig smb on ##开机启动
+	adduser upload
+	passwd upload
+	设置密码123456
+	smbpasswd -a upload
+	设置密码123456
+
+十三、关于录制存储和点播存储配置
+	在RAID BIOS里对存储盘进行RAID配置:
+		一般录制存储盘做RIAD0，点播存储盘做RAID5
+	查看存储盘设备名称,如/dev/sdb,/dev/sdc:
+		ll /dev/disk/by-path
+	存储文件系统制作：
+		mkfs.ext4 -b4096 /dev/sdb
+		mkfs.ext4 -b4096 /dev/sdc
+	创建挂载目录：
+		mkdir /record
+		mkdir /vod
+		如果是同一存储盘,mkdir /storage	
+	mount存储盘：
+		mount /dev/sdb /record
+		mount /dev/sdc
+		如果是同一存储盘，mount /dev/sdb /storage，然后mkdir /storage/record和mkdir /storage/vod
+	修改/etc/fstab让系统启动时装载存储盘：
+		/dev/sdb /record ext4 defaults 0 0
+		/dev/sdc /vod ext4 defaults 0 0
+		如果是同一存储盘，/dev/sdb /storage ext4 defaults 0 0
+	录制的存储目录链接：
+		ln -s /record /opt/wwwroot/xapi/tvod/record
+			 /record /opt/wwwroot/xapi/replay/record
+		如果是同一存储盘, ln -s /storage/record ...
+	点播的存储目录链接：
+		ln -s /vod /opt/wwwroot/movies	
+
+
+十四、安装后配置
+	打开命令终端，切换到root用户
+	reboot重启服务器	
+	服务器起来后登录服务器进行配置：
+		http://服务器ip/index.php，从这里可以选择网络管理，直播管理和业务管理进行登录管理
+	首先应该选择一个网络接口进行管理接口的IP配置，缺省为192.168.198.8
